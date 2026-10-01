@@ -1,0 +1,12 @@
+*.flac
+*.wav
+*.m4a
+*.mp3
+*.md
+!README.md
+api_key
+*.key
+.env
+__pycache__/
+.DS_Store
+config.json
