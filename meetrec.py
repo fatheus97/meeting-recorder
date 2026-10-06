@@ -15,6 +15,7 @@ import datetime
 import os
 import pathlib
 import re
+import shutil
 import signal
 import subprocess
 import json
@@ -41,8 +42,8 @@ MEETINGS = pathlib.Path.home() / "meetings"
 # different ledger, and no work vocabulary in the transcription request.
 PERSONAL = pathlib.Path.home() / "meetings-personal"
 PERSONAL_CONTEXT = _cfg.get("personal_context", "Czech/English conversation, personal meeting")
-FFMPEG = "/opt/homebrew/bin/ffmpeg"
-FFPROBE = "/opt/homebrew/bin/ffprobe"
+FFMPEG = shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"     # Intel Macs: /usr/local/bin
+FFPROBE = shutil.which("ffprobe") or "/opt/homebrew/bin/ffprobe"
 # A stalled aggregate recorded a whole meeting at -91.0 dB (2026-09-24, digital silence);
 # all 16 real recordings to 2026-10-01 read -25.6 to -44.2. Below this is a dead input.
 SILENCE_DB = -80.0
