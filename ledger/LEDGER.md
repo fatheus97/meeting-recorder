@@ -118,7 +118,7 @@ one. Every write re-reads the file under a lock, is checked before it lands, and
 
 | File | What it holds | Who writes |
 |---|---|---|
-| `OPEN.md` | Live items | `/meeting`, `/note`, `/wrap-up` (on the user's yes), the board, hand edits |
+| `OPEN.md` | Live items | `/meeting`, `/note`, `/wrap-up` (on the user's yes), the board, hand edits, a working session for the items its own work moved |
 | `DECISIONS.md` | Append-only decisions | `/meeting`, `/note` |
 | `NOTES.md` | Narrative between meetings | `/note` |
 | `COACHING.md` | One behaviour note per recorded meeting | `/meeting` only |

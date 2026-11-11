@@ -92,8 +92,8 @@ Check `git log`, `gh pr list`, the actual files. Never guess from the item text 
 ```
 
 End with one line: whether anything in the ledger should be corrected, and the exact edit,
-but **do not make it**. Ledger writes belong to `/meeting`, `/note`, the board, or the user
-by hand; two sessions editing `OPEN.md` from stale copies is how items get lost.
+but **do not make it**. Ledger writes belong to the writers listed in `LEDGER.md`, and this
+skill is not one of them; two sessions editing `OPEN.md` from stale copies is how items get lost.
 
 ## Constraints
 

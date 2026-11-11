@@ -62,30 +62,41 @@ Between meetings, reality moves in the repos and the ledger does not follow. It 
 to find several items still open, one even reading "next quarter", that merged code
 resolved days ago and nobody mentioned.
 
-Find what landed since the last run:
+Find what landed since the last run. Merged PRs, from `gh`:
 
 ```bash
 for r in ~/code/*/; do [ -e "$r/.git" ] || continue; echo "== $(basename $r)"; (cd "$r" && gh pr list --state merged --search "merged:>=YYYY-MM-DD" --limit 20 --json number,title,author --jq '.[] | "\(.number) \(.title) — \(.author.login)"' 2>/dev/null); done
 ```
 
-Use the date of the previous run (the snapshot file's modification date), or yesterday if
-there is none. **Query `gh`, not the local `git log`**: local `main` lags behind the remote,
-and a loop over `git log` silently misses everything merged since the last pull.
+`gh` sees only GitHub, and only merges. Work still on a branch, or in a repo hosted
+elsewhere (Azure DevOps), shows up only as commits, so also list the commits on every local
+branch:
 
-Then match merged PRs against **open** `OI-` items by subject, and report the matches as
-**candidates**:
+```bash
+for r in ~/code/*/; do [ -e "$r/.git" ] || continue; echo "== $(basename $r)"; (cd "$r" && git log --all --no-merges --since=YYYY-MM-DD --date=short --format='%h %ad %s'); done
+```
+
+In both loops use the date of the previous run (the snapshot file's modification date), or
+yesterday if there is none. **For merges, trust `gh` over the local `git log`**: local `main`
+lags behind the remote, so `git log` misses what others merged since the last pull. The
+commit loop is for the user's own work, merged or not.
+
+Then match merged PRs and commits against **open** `OI-` items by subject, and report the
+matches as **candidates**:
 
 `OI-12 looks done: PR #42 "…" (merged 21.3). Confirm?`
+`OI-15 looks done: commit 3f2a91c "…" (21.3). Confirm?`
 
 Hard rules for this section:
 - **Never close anything. Never edit the ledger.** Flag candidates only; the user or
-  `/meeting` confirms. A merged PR is evidence, not proof: the item may be broader than the
-  PR.
-- Cap at five candidates, strongest first. Say how many more merged PRs went unmatched.
+  `/meeting` confirms. A merged PR or a commit is evidence, not proof: the item may be
+  broader than the change.
+- Cap at five candidates, strongest first. Say how many more merged PRs and commits went
+  unmatched.
 - Also flag the reverse when you see it: an item the ledger calls done or in progress that
   the repo contradicts.
-- If `gh` is unavailable or unauthenticated, say so in one line and skip; do not fall back
-  to guessing.
+- If `gh` is unavailable or unauthenticated, say so in one line and skip the PR loop; do not
+  fall back to guessing. The commit loop still runs.
 
 **4 — On you.** Items whose next-mover is `me` (or, with no next-mover, owned by the user),
 ranked by: blocking someone else > dated > blocking another item > age. **Cap at five**,
